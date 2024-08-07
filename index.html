@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile List with Dynamic Search</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      // UserProfile component to display individual user profiles
+      function UserProfile({ user }) {
+        return (
+          <div style={{ padding: "10px", border: "1px solid #ddd", marginBottom: "10px" }}>
+            <h3>{user.name}</h3>
+            <p>Age: {user.age}</p>
+            <p>Location: {user.location}</p>
+          </div>
+        );
+      }
+
+      // Main component that renders the user profiles list and search functionality
+      function App() {
+        const [searchTerm, setSearchTerm] = React.useState("");
+        const [users, setUsers] = React.useState([
+          { name: "Alice Johnson", age: 28, location: "New York" },
+          { name: "Bob Smith", age: 34, location: "San Francisco" },
+          { name: "Charlie Brown", age: 22, location: "Los Angeles" },
+          { name: "David Wilson", age: 45, location: "Chicago" },
+          // Add more users here
+        ]);
+
+        const handleSearchChange = (event) => {
+          setSearchTerm(event.target.value);
+        };
+
+        const filteredUsers = users.filter(user =>
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        return (
+          <div style={{ padding: "20px" }}>
+            <h1>User Profile List with Dynamic Search</h1>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              style={{ padding: "10px", marginBottom: "20px", width: "100%" }}
+            />
+            {filteredUsers.map((user, index) => (
+              <UserProfile key={index} user={user} />
+            ))}
+          </div>
+        );
+      }
+
+      // Render the App component into the root element
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
